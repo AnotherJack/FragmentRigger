@@ -40,6 +40,7 @@ import java.util.Stack;
  * @since Nov 20,2017
  */
 
+@SuppressWarnings("ConstantConditions")
 abstract class _Rigger implements IRigger {
 
   static final String BUNDLE_KEY_FOR_RESULT = "/bundle/key/for/result";
@@ -275,7 +276,7 @@ abstract class _Rigger implements IRigger {
     mRiggerTransaction.hide(getVisibleFragmentTags(getContainerViewId()));
     Fragment topFragment = mRiggerTransaction.find(topFragmentTag);
     if (!TextUtils.isEmpty(topFragmentTag) && topFragment != null) {
-      if (animation != null) {
+      if (topFragment.getView() != null && animation != null) {
         topFragment.getView().startAnimation(animation);
         //cancel the default animation and use the custom animation.
       }
@@ -369,6 +370,7 @@ abstract class _Rigger implements IRigger {
   @Override
   final public Stack<String> getFragmentStack() {
     if (mStackManager == null || mStackManager.getFragmentStack() == null) return new Stack<>();
+    //noinspection unchecked
     return (Stack<String>) mStackManager.getFragmentStack().clone();
   }
 
